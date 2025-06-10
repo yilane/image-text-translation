@@ -8,6 +8,7 @@ import {
   SettingOutlined, HistoryOutlined 
 } from '@ant-design/icons'
 import type { UploadProps } from 'antd'
+import './ImageTranslator.css'
 
 const { Dragger } = Upload
 const { Title, Text, Paragraph } = Typography
@@ -179,46 +180,49 @@ const ImageTranslator: React.FC = () => {
   ]
 
   return (
-    <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
-      <Title level={1} style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        🌐 智能图片文字翻译工具
-      </Title>
+    <div className="image-translator-container">
+      <div className="image-translator-content">
+        <Title level={1} className="image-translator-title">
+          🌐 智能图片文字翻译工具
+        </Title>
 
-      <Steps current={currentStep} style={{ marginBottom: '2rem' }}>
-        <Step title="上传图片" icon={<InboxOutlined />} />
-        <Step title="配置翻译" icon={<SettingOutlined />} />
-        <Step title="处理翻译" icon={<TranslationOutlined />} />
-        <Step title="查看结果" icon={<EyeOutlined />} />
-      </Steps>
+        <div className="image-translator-steps">
+          <Steps current={currentStep}>
+            <Step title="上传图片" icon={<InboxOutlined />} />
+            <Step title="配置翻译" icon={<SettingOutlined />} />
+            <Step title="处理翻译" icon={<TranslationOutlined />} />
+            <Step title="查看结果" icon={<EyeOutlined />} />
+          </Steps>
+        </div>
 
-      {currentStep === 0 && (
-        <Card title="📤 上传图片">
-          <Dragger {...uploadProps} style={{ padding: '2rem' }}>
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined style={{ fontSize: '48px', color: '#1890ff' }} />
-            </p>
-            <p className="ant-upload-text">
-              点击或拖拽图片到此区域上传
-            </p>
-            <p className="ant-upload-hint">
-              支持 PNG、JPG、JPEG、BMP、TIFF、WebP 格式，文件大小不超过 10MB
-            </p>
-          </Dragger>
-        </Card>
-      )}
+        {currentStep === 0 && (
+          <Card title="📤 上传图片" className="image-translator-card">
+            <Dragger {...uploadProps} className="upload-dragger" style={{ padding: '2rem' }}>
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined style={{ fontSize: '48px', color: '#1890ff' }} />
+              </p>
+              <p className="ant-upload-text">
+                点击或拖拽图片到此区域上传
+              </p>
+              <p className="ant-upload-hint">
+                支持 PNG、JPG、JPEG、BMP、TIFF、WebP 格式，文件大小不超过 10MB
+              </p>
+            </Dragger>
+          </Card>
+        )}
 
-      {currentStep >= 1 && uploadedFile && (
-        <Row gutter={[24, 24]}>
-          <Col xs={24} lg={12}>
-            <Card title="📷 原始图片">
-              <div style={{ textAlign: 'center' }}>
-                <Image
-                  width="100%"
-                  src={uploadedFile.url}
-                  alt={uploadedFile.name}
-                  style={{ maxHeight: '400px', objectFit: 'contain' }}
-                />
-              </div>
+        {currentStep >= 1 && uploadedFile && (
+          <Row gutter={[24, 24]}>
+            <Col xs={24} lg={12}>
+              <Card title="📷 原始图片" className="image-translator-card">
+                <div className="image-preview">
+                  <Image
+                    width="100%"
+                    src={uploadedFile.url}
+                    alt={uploadedFile.name}
+                    style={{ maxHeight: '400px', objectFit: 'contain' }}
+                  />
+                </div>
               <Divider />
               <Space direction="vertical">
                 <Text><strong>文件名:</strong> {uploadedFile.name}</Text>
@@ -230,8 +234,9 @@ const ImageTranslator: React.FC = () => {
           </Col>
 
           <Col xs={24} lg={12}>
-            <Card title="⚙️ 翻译配置">
-              <Space direction="vertical" style={{ width: '100%' }} size="large">
+            <Card title="⚙️ 翻译配置" className="image-translator-card">
+              <div className="config-section">
+                <Space direction="vertical" style={{ width: '100%' }} size="large">
                 <div>
                   <Text strong>源语言：</Text>
                   <Select
@@ -286,7 +291,7 @@ const ImageTranslator: React.FC = () => {
 
                 <Divider />
 
-                <Space>
+                <div className="button-group">
                   <Button
                     type="primary"
                     icon={<TranslationOutlined />}
@@ -297,30 +302,31 @@ const ImageTranslator: React.FC = () => {
                     开始翻译
                   </Button>
                   <Button onClick={handleReset}>重新开始</Button>
-                </Space>
+                </div>
               </Space>
+              </div>
             </Card>
           </Col>
         </Row>
       )}
 
-      {currentStep === 2 && (
-        <Card title="🔄 正在处理">
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
-            <Spin size="large" />
-            <Paragraph style={{ marginTop: '1rem' }}>
-              正在进行OCR识别和文字翻译，请稍候...
-            </Paragraph>
-            <Progress percent={75} status="active" />
-          </div>
-        </Card>
-      )}
+        {currentStep === 2 && (
+          <Card title="🔄 正在处理" className="image-translator-card">
+            <div className="processing-section">
+              <Spin size="large" />
+              <Paragraph style={{ marginTop: '1rem' }}>
+                正在进行OCR识别和文字翻译，请稍候...
+              </Paragraph>
+              <Progress percent={75} status="active" />
+            </div>
+          </Card>
+        )}
 
       {currentStep === 3 && translationResult && (
         <Row gutter={[24, 24]}>
           <Col xs={24} lg={12}>
-            <Card title="✨ 翻译结果">
-              <div style={{ textAlign: 'center' }}>
+            <Card title="✨ 翻译结果" className="image-translator-card">
+              <div className="result-image">
                 <Image
                   width="100%"
                   src={`http://localhost:8000/${translationResult.data.output_image_path}`}
@@ -343,13 +349,14 @@ const ImageTranslator: React.FC = () => {
           </Col>
 
           <Col xs={24} lg={12}>
-            <Card title="📊 翻译详情">
-              <Space direction="vertical" style={{ width: '100%' }}>
-                <Alert
-                  message={`成功翻译 ${translationResult.data.processing_info.total_regions} 个文字区域`}
-                  type="success"
-                  showIcon
-                />
+            <Card title="📊 翻译详情" className="image-translator-card">
+              <div className="result-section">
+                <Space direction="vertical" style={{ width: '100%' }}>
+                  <Alert
+                    message={`成功翻译 ${translationResult.data.processing_info.total_regions} 个文字区域`}
+                    type="success"
+                    showIcon
+                  />
                 
                 <div>
                   <Tag color="blue">源语言: {translationResult.data.processing_info.source_language}</Tag>
@@ -359,9 +366,9 @@ const ImageTranslator: React.FC = () => {
 
                 <Divider orientation="left">翻译对照</Divider>
 
-                <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                <div className="translation-details">
                   {translationResult.data.translation_results.map((result, index) => (
-                    <Card key={index} size="small" style={{ marginBottom: '8px' }}>
+                    <Card key={index} size="small" className="translation-item">
                       <Space direction="vertical" style={{ width: '100%' }}>
                         <Text strong>区域 {index + 1} (置信度: {(result.confidence * 100).toFixed(1)}%)</Text>
                         <Text>原文: {result.original_text}</Text>
@@ -373,15 +380,17 @@ const ImageTranslator: React.FC = () => {
 
                 <Divider />
 
-                <Space>
+                <div className="button-group">
                   <Button onClick={handleReset}>翻译新图片</Button>
                   <Button icon={<HistoryOutlined />}>查看历史</Button>
-                </Space>
+                </div>
               </Space>
+              </div>
             </Card>
           </Col>
         </Row>
       )}
+      </div>
     </div>
   )
 }

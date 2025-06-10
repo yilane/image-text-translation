@@ -27,8 +27,12 @@ class TranslationService:
         
         # 初始化OpenAI客户端
         openai_api_key = os.getenv("OPENAI_API_KEY")
+        openai_base_url = os.getenv("OPENAI_BASE_URL")
         if openai_api_key:
-            self.openai_client = openai.OpenAI(api_key=openai_api_key)
+            if openai_base_url:
+                self.openai_client = openai.OpenAI(api_key=openai_api_key, base_url=openai_base_url)
+            else:
+                self.openai_client = openai.OpenAI(api_key=openai_api_key)
     
     async def translate_text(self, 
                            text: str, 

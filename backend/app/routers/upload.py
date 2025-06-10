@@ -6,16 +6,40 @@ import uuid
 import shutil
 from PIL import Image
 import aiofiles
+from datetime import datetime
 
 from app.database.database import get_db
-from ..database.models import TranslationHistory
 from app.utils.file_utils import validate_image_file, get_image_info
 
 router = APIRouter()
 
 ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.webp'}
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
-UPLOAD_DIR = "uploads"
+UPLOAD_BASE_DIR = "uploads"
+
+def get_date_path():
+    """
+    生成基于当前日期的子目录路径
+    格式: YYYY/MM/DD
+    """
+    now = datetime.now()
+    return now.strftime("%Y/%m/%d")
+
+def create_upload_path(filename: str) -> tuple[str, str]:
+    """
+    创建按日期分类的上传路径
+    
+    Returns:
+        tuple: (相对路径, 绝对路径)
+    """
+    date_path = get_date_path()
+    relative_path = os.path.join(UPLOAD_BASE_DIR, date_path, filename)
+    absolute_dir = os.path.join(UPLOAD_BASE_DIR, date_path)
+    
+    # 确保目录存在
+    os.makedirs(absolute_dir, exist_ok=True)
+    
+    return relative_path, absolute_dir
 
 @router.post("/upload")
 async def upload_image(
@@ -23,7 +47,7 @@ async def upload_image(
     db: Session = Depends(get_db)
 ):
     """
-    上传图片文件
+    上传图片文件，按日期目录分类保存
     """
     try:
         # 验证文件格式
@@ -45,34 +69,43 @@ async def upload_image(
         # 生成唯一文件名
         file_id = str(uuid.uuid4())
         filename = f"{file_id}{file_ext}"
-        file_path = os.path.join(UPLOAD_DIR, filename)
         
-        # 确保上传目录存在
-        os.makedirs(UPLOAD_DIR, exist_ok=True)
+        # 创建按日期分类的存储路径
+        file_path, upload_dir = create_upload_path(filename)
+        full_file_path = file_path
         
         # 保存文件
-        async with aiofiles.open(file_path, 'wb') as f:
+        async with aiofiles.open(full_file_path, 'wb') as f:
             await f.write(file_content)
         
         # 验证图像文件并获取信息
         try:
-            image_info = get_image_info(file_path)
+            image_info = get_image_info(full_file_path)
         except Exception as e:
             # 删除无效文件
-            os.remove(file_path)
+            os.remove(full_file_path)
             raise HTTPException(
                 status_code=400,
                 detail=f"无效的图像文件: {str(e)}"
             )
         
-        # 创建翻译历史记录
-        history = TranslationHistory(
-            original_image_path=file_path,
-            status="uploaded"
+        # 创建上传文件记录
+        from ..database.models import UploadedFile
+        
+        uploaded_file = UploadedFile(
+            file_id=file_id,
+            original_filename=file.filename,
+            file_path=file_path,  # 存储相对路径
+            file_size=len(file_content),
+            mime_type=file.content_type or f"image/{file_ext[1:]}",
+            width=image_info.get("width"),
+            height=image_info.get("height"),
+            format=image_info.get("format"),
+            mode=image_info.get("mode")
         )
-        db.add(history)
+        db.add(uploaded_file)
         db.commit()
-        db.refresh(history)
+        db.refresh(uploaded_file)
         
         return JSONResponse(
             status_code=200,
@@ -81,10 +114,11 @@ async def upload_image(
                 "message": "文件上传成功",
                 "data": {
                     "file_id": file_id,
-                    "history_id": history.id,
+                    "upload_id": uploaded_file.id,
                     "file_path": file_path,
                     "file_size": len(file_content),
-                    "image_info": image_info
+                    "image_info": image_info,
+                    "date_path": get_date_path()  # 返回日期路径信息
                 }
             }
         )
@@ -104,32 +138,36 @@ async def get_upload_history(
     db: Session = Depends(get_db)
 ):
     """
-    获取上传历史记录
+    获取上传文件历史记录
     """
     try:
-        histories = db.query(TranslationHistory)\
-                     .order_by(TranslationHistory.created_at.desc())\
-                     .offset(skip)\
-                     .limit(limit)\
-                     .all()
+        from ..database.models import UploadedFile
+        
+        files = db.query(UploadedFile)\
+                  .order_by(UploadedFile.created_at.desc())\
+                  .offset(skip)\
+                  .limit(limit)\
+                  .all()
         
         return JSONResponse(
             status_code=200,
             content={
                 "success": True,
                 "data": {
-                    "histories": [
+                    "files": [
                         {
-                            "id": h.id,
-                            "original_image_path": h.original_image_path,
-                            "translated_image_path": h.translated_image_path,
-                            "source_language": h.source_language,
-                            "target_language": h.target_language,
-                            "status": h.status,
-                            "processing_time": h.processing_time,
-                            "created_at": h.created_at.isoformat()
+                            "id": f.id,
+                            "file_id": f.file_id,
+                            "original_filename": f.original_filename,
+                            "file_path": f.file_path,
+                            "file_size": f.file_size,
+                            "mime_type": f.mime_type,
+                            "width": f.width,
+                            "height": f.height,
+                            "format": f.format,
+                            "created_at": f.created_at.isoformat()
                         }
-                        for h in histories
+                        for f in files
                     ]
                 }
             }
@@ -137,5 +175,62 @@ async def get_upload_history(
     except Exception as e:
         raise HTTPException(
             status_code=500,
-            detail=f"获取历史记录失败: {str(e)}"
+            detail=f"获取上传历史失败: {str(e)}"
+        )
+
+@router.get("/upload/storage-info")
+async def get_storage_info(
+    db: Session = Depends(get_db)
+):
+    """
+    获取存储信息统计
+    """
+    try:
+        from ..database.models import UploadedFile
+        import os
+        from collections import defaultdict
+        
+        # 获取数据库统计
+        total_files = db.query(UploadedFile).count()
+        
+        # 计算总大小
+        all_files = db.query(UploadedFile).all()
+        total_size = sum(f.file_size for f in all_files) if all_files else 0
+        
+        # 按日期统计文件
+        files_by_date = defaultdict(lambda: {"count": 0, "size": 0})
+        all_files = db.query(UploadedFile).all()
+        
+        for file_record in all_files:
+            date_str = file_record.created_at.strftime("%Y-%m-%d")
+            files_by_date[date_str]["count"] += 1
+            files_by_date[date_str]["size"] += file_record.file_size
+        
+        # 检查目录结构
+        directory_structure = {}
+        if os.path.exists(UPLOAD_BASE_DIR):
+            for root, dirs, files in os.walk(UPLOAD_BASE_DIR):
+                rel_path = os.path.relpath(root, UPLOAD_BASE_DIR)
+                if rel_path != ".":
+                    directory_structure[rel_path] = len(files)
+        
+        return JSONResponse(
+            status_code=200,
+            content={
+                "success": True,
+                "data": {
+                    "total_files": total_files,
+                    "total_size": total_size,
+                    "total_size_mb": round(total_size / 1024 / 1024, 2),
+                    "files_by_date": dict(files_by_date),
+                    "directory_structure": directory_structure,
+                    "storage_path_format": "uploads/YYYY/MM/DD/"
+                }
+            }
+        )
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"获取存储信息失败: {str(e)}"
         ) 

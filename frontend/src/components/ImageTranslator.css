@@ -1,0 +1,471 @@
+/* ImageTranslator 组件样式 */
+
+.image-translator-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.image-translator-content {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.image-translator-title {
+  color: #ffffff !important;
+  text-align: center;
+  margin-bottom: 2rem !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  width: 100%;
+}
+
+.image-translator-steps {
+  margin-bottom: 2.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2rem 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 步骤条整体样式 */
+.image-translator-steps .ant-steps {
+  font-size: 14px;
+}
+
+/* 步骤项标题 */
+.image-translator-steps .ant-steps-item-title {
+  color: #2c3e50 !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+  margin-top: 8px !important;
+}
+
+/* 当前步骤（进行中）图标 */
+.image-translator-steps .ant-steps-item-process .ant-steps-item-icon {
+  background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  border-color: #667eea !important;
+  border-width: 2px !important;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 32px !important;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+}
+
+.image-translator-steps .ant-steps-item-process .ant-steps-item-icon .ant-steps-icon {
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+
+/* 等待步骤图标 */
+.image-translator-steps .ant-steps-item-wait .ant-steps-item-icon {
+  background-color: #f8f9fa !important;
+  border-color: #dee2e6 !important;
+  border-width: 2px !important;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 32px !important;
+}
+
+.image-translator-steps .ant-steps-item-wait .ant-steps-item-icon .ant-steps-icon {
+  color: #6c757d !important;
+  font-size: 16px !important;
+}
+
+.image-translator-steps .ant-steps-item-wait .ant-steps-item-title {
+  color: #6c757d !important;
+}
+
+/* 完成步骤图标 */
+.image-translator-steps .ant-steps-item-finish .ant-steps-item-icon {
+  background: linear-gradient(135deg, #28a745, #20c997) !important;
+  border-color: #28a745 !important;
+  border-width: 2px !important;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 32px !important;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3) !important;
+}
+
+.image-translator-steps .ant-steps-item-finish .ant-steps-item-icon .ant-steps-icon {
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+
+.image-translator-steps .ant-steps-item-finish .ant-steps-item-title {
+  color: #28a745 !important;
+}
+
+/* 连接线样式 */
+.image-translator-steps .ant-steps-item-tail::after {
+  background-color: #dee2e6 !important;
+  height: 2px !important;
+}
+
+.image-translator-steps .ant-steps-item-finish .ant-steps-item-tail::after {
+  background: linear-gradient(90deg, #28a745, #667eea) !important;
+}
+
+.image-translator-card {
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  margin-bottom: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.image-translator-card .ant-card-head {
+  background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  border-bottom: none !important;
+  border-radius: 16px 16px 0 0 !important;
+}
+
+.image-translator-card .ant-card-head-title {
+  color: #ffffff !important;
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.image-translator-card .ant-card-body {
+  padding: 2rem !important;
+}
+
+/* 上传区域样式 */
+.upload-dragger {
+  background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%) !important;
+  border: 2px dashed #667eea !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.upload-dragger:hover {
+  border-color: #4f46e5 !important;
+  background: linear-gradient(135deg, #f0f4ff 0%, #dce7ff 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+/* 保持上传区域内容样式 */
+.upload-dragger .ant-upload-drag-icon {
+  margin-bottom: 1rem !important;
+}
+
+.upload-dragger .ant-upload-text {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  color: #667eea !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.upload-dragger .ant-upload-hint {
+  color: #8c8c8c !important;
+  font-size: 0.95rem !important;
+}
+
+/* 隐藏上传文件列表 */
+.image-translator-card .ant-upload-list {
+  display: none !important;
+}
+
+/* 图片预览样式 */
+.image-preview {
+  text-align: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.image-preview .ant-image {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 配置区域样式 */
+.config-section {
+  background: #f8f9ff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.config-section .ant-select {
+  border-radius: 8px !important;
+}
+
+.config-section .ant-btn {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  height: auto !important;
+  padding: 0.75rem 1.5rem !important;
+}
+
+.config-section .ant-btn-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.config-section .ant-btn-primary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4) !important;
+}
+
+/* 进度显示样式 */
+.processing-section {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+  border-radius: 16px;
+}
+
+.processing-section .ant-spin {
+  margin-bottom: 2rem;
+}
+
+.processing-section .ant-progress {
+  margin-top: 1.5rem;
+}
+
+/* 结果展示样式 */
+.result-section {
+  background: #f8f9ff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.result-image {
+  text-align: center;
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.translation-details {
+  max-height: 350px;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+.translation-item {
+  background: #ffffff !important;
+  border: 1px solid #e8e8e8 !important;
+  border-radius: 8px !important;
+  margin-bottom: 0.75rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.translation-item:hover {
+  border-color: #667eea !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1) !important;
+}
+
+/* 状态标签样式 */
+.ant-tag {
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  padding: 0.25rem 0.75rem !important;
+}
+
+/* 按钮组样式 */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
+.button-group .ant-btn {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  padding: 0.75rem 1.5rem !important;
+  height: auto !important;
+}
+
+/* 统一布局样式 */
+.image-translator-content > * {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Row组件宽度控制 */
+.image-translator-content .ant-row {
+  width: 100% !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+/* 确保所有卡片保持一致的间距和高度 */
+.image-translator-content .ant-col {
+  padding: 0 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.image-translator-content .ant-col:first-child {
+  padding-left: 0 !important;
+}
+
+.image-translator-content .ant-col:last-child {
+  padding-right: 0 !important;
+}
+
+/* 让卡片填满列的高度 */
+.image-translator-content .ant-col .image-translator-card {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+}
+
+/* 让卡片内容区域自动填充剩余空间 */
+.image-translator-content .ant-col .image-translator-card .ant-card-body {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* 单列布局时移除内边距和高度限制 */
+@media (max-width: 991px) {
+  .image-translator-content .ant-row {
+    flex-direction: column !important;
+  }
+  
+  .image-translator-content .ant-col {
+    padding: 0 !important;
+    margin-bottom: 1.5rem;
+  }
+  
+  .image-translator-content .ant-col:last-child {
+    margin-bottom: 0;
+  }
+  
+  .image-translator-content .ant-col .image-translator-card {
+    height: auto !important;
+  }
+  
+  .image-preview,
+  .result-image {
+    min-height: 200px !important;
+  }
+}
+
+
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .image-translator-container {
+    padding: 1rem 0.5rem;
+  }
+  
+  .image-translator-content {
+    max-width: 100%;
+    padding: 0 0.5rem;
+  }
+  
+  .image-translator-title {
+    font-size: 2rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .image-translator-steps {
+    padding: 1.5rem 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .image-translator-card .ant-card-body {
+    padding: 1.5rem !important;
+  }
+  
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .button-group .ant-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* 滚动条样式 */
+.translation-details::-webkit-scrollbar {
+  width: 6px;
+}
+
+.translation-details::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.translation-details::-webkit-scrollbar-thumb {
+  background: #667eea;
+  border-radius: 3px;
+}
+
+.translation-details::-webkit-scrollbar-thumb:hover {
+  background: #4f46e5;
+}
+
+/* 加载动画增强 */
+.ant-spin-dot-item {
+  background-color: #667eea !important;
+}
+
+/* Alert样式增强 */
+.ant-alert-success {
+  border-radius: 8px !important;
+  border: none !important;
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%) !important;
+} 
