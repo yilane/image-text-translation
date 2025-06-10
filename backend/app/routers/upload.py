@@ -8,7 +8,7 @@ from PIL import Image
 import aiofiles
 
 from app.database.database import get_db
-from app.models.models import TranslationHistory
+from ..database.models import TranslationHistory
 from app.utils.file_utils import validate_image_file, get_image_info
 
 router = APIRouter()

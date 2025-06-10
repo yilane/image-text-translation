@@ -18,8 +18,7 @@ engine = create_engine(
 # 创建会话工厂
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# 创建基类
-Base = declarative_base()
+# 基类将从models.py导入
 
 # 依赖注入函数
 def get_db():

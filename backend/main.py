@@ -3,8 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os
 
-from app.routers import upload, ocr, translate, process, config
-from app.database.database import engine, Base
+from app.routers import upload, ocr, translate, process, config, history
+from app.database.database import engine
+from app.database.models import Base
 
 # 创建数据库表
 Base.metadata.create_all(bind=engine)
@@ -38,6 +39,7 @@ app.include_router(ocr.router, prefix="/api", tags=["文字识别"])
 app.include_router(translate.router, prefix="/api", tags=["文字翻译"])
 app.include_router(process.router, prefix="/api", tags=["图像处理"])
 app.include_router(config.router, prefix="/api", tags=["配置管理"])
+app.include_router(history.router, prefix="/api", tags=["历史记录"])
 
 @app.get("/")
 async def root():

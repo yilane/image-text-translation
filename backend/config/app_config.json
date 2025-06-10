@@ -1,0 +1,67 @@
+{
+  "translation_configs": {
+    "openai": {
+      "provider": "openai",
+      "api_key": "",
+      "api_url": "https://api.openai.com/v1",
+      "model": "gpt-3.5-turbo",
+      "max_tokens": 4000,
+      "temperature": 0.3,
+      "timeout": 30,
+      "enabled": true
+    },
+    "baidu": {
+      "provider": "baidu",
+      "api_key": "",
+      "api_url": "https://fanyi-api.baidu.com/api/trans/vip/translate",
+      "model": "",
+      "max_tokens": 2000,
+      "temperature": 0.0,
+      "timeout": 30,
+      "enabled": true
+    },
+    "google": {
+      "provider": "google",
+      "api_key": "",
+      "api_url": "https://translation.googleapis.com/language/translate/v2",
+      "model": "",
+      "max_tokens": 2000,
+      "temperature": 0.0,
+      "timeout": 30,
+      "enabled": true
+    }
+  },
+  "ocr_config": {
+    "use_angle_cls": true,
+    "use_space_char": true,
+    "det_db_thresh": 0.3,
+    "det_db_box_thresh": 0.6,
+    "det_db_unclip_ratio": 1.5,
+    "rec_batch_num": 6,
+    "lang": "ch"
+  },
+  "image_processing_config": {
+    "inpaint_radius": 3,
+    "font_size_ratio": 0.8,
+    "font_path": "",
+    "auto_font_color": true,
+    "default_font_color": [
+      0,
+      0,
+      0
+    ],
+    "padding_ratio": 0.1,
+    "line_spacing": 1.2
+  },
+  "user_preferences": {
+    "default_source_language": "auto",
+    "default_target_language": "en",
+    "default_provider": "openai",
+    "min_confidence": 0.5,
+    "save_original": true,
+    "auto_detect_language": true,
+    "theme": "light",
+    "history_limit": 100
+  },
+  "last_updated": "2025-06-10T14:50:37.986124"
+}
